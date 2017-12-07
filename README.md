@@ -1,2 +1,3 @@
 # HatterBot
-A discord bot that recognize faces and place a hat on top.
+
+A dumb discord bot that recognize faces and place a hat on top.
