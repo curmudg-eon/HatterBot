@@ -13,6 +13,7 @@ Reference
 
 import discord
 import asyncio
+from configparser import SafeConfigParser
 from discord.ext import commands
 from discord.ext.commands import Bot
 from urllib3.request import urlretrieve
@@ -23,8 +24,9 @@ from PIL import Image
 bot = Bot(description='Hats and stuff',
         command_prefix='+')
 """bot API wrapper"""
-
-token = ''
+parser = SafeConfigParser()
+parser.read('config.ini')
+token = parser.get('onlySection','token')
 """discord bot API token"""
 
 @bot.event
@@ -39,9 +41,9 @@ async def hat(hat:str='', allfaces:str='false'):
     # define a haar-cascader from a pre-trained data
     facefinder = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
     # load the victim image, to which we will add a hat 
-    victimimg = ''
+    victim_img = ''
     victim, _ = urlretrieve(victimimg)
-    hatimg = message
+    hat_img = message
     hat, _ = urlretrieve(hatimg)
     img = cv2.imread(victim)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
