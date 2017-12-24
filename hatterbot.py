@@ -30,10 +30,15 @@ token = parser.get('onlySection','token')
 """discord bot API token"""
 
 @bot.event
-async def on_read():
+async def on_ready():
     print('Logged in as {}, id = {}'.format(
         bot.user.name, 
         bot.user.id))
+
+@bot.event
+async def on_message(message):
+    if message[:1] == command_prefix:
+        #do something
 
 @bot.command()
 async def hat(hat:str='', allfaces:str='false'):
@@ -44,16 +49,15 @@ async def hat(hat:str='', allfaces:str='false'):
     victim_img = ''
     victim, _ = urlretrieve(victimimg)
     hat_img = message
-    hat, _ = urlretrieve(hatimg)
+    hat, _ = urlretrieve(hat_img)
     img = cv2.imread(victim)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     faces = facefinder.detectMultiScale(gray, 1.3, 5)
     if not allfaces:
-        faces = [max(faces,key=lambda x,y,w,h: w*h)]
+        faces = [max(faces,key=lambda x,y,w,h: w*h)
     for x,y,w,h in faces:
         pass
     await bot.say('hello!')
 
 bot.run(token)
 # connect to specific channel?
-
