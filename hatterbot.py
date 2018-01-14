@@ -33,7 +33,7 @@ parser = SafeConfigParser()
 parser.read('config.ini')
 token = parser.get('onlySection','token')
 """discord bot API token"""
-print(token)
+
 
 @bot.event
 async def on_ready():
@@ -45,9 +45,11 @@ async def on_ready():
 async def on_message(message):
     if message[:1] == command_prefix:
         print('they did the thing') #do something for real
+        if message[1:6] == ('hatme'):
+            print('you speak in strange tongues lad')
 
 @bot.command()
-async def hat(hat:str='', allfaces:str='false'):
+async def hat(victim:str, hat:str='', allfaces:str='false'):
     """supply a user with a hat"""
     # define a haar-cascader from a pre-trained data
     facefinder = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
