@@ -25,6 +25,14 @@ from urllib.request import urlretrieve
 import numpy as np
 import cv2
 from PIL import Image
+import logging
+
+#This allows error logging from Discord
+logger = logging.getLogger('discord')
+logger.setLevel(logging.DEBUG)
+handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
+handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
+logger.addHandler(handler)
 
 bot = Bot(description='Hats and stuff',
         command_prefix='+')
@@ -43,19 +51,24 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    if message[:1] == command_prefix:
+    if message.author == bot.user:
+        return
+    if message.content[:1] == '+': # command_prefix:
         print('they did the thing') #do something for real
-        if message[1:6] == ('hatme'):
+        if message.content.startswith('+hatme'):
             print('you speak in strange tongues lad')
+            msg = 'Hello {0.author.mention}'.format(message)
+            await bot.send_message(message.channel, msg)
+
 
 @bot.command()
-async def hat(victim:str, hat:str='', allfaces:str='false'):
+async def hat(victim, hat, allfaces:str=False):
     """supply a user with a hat"""
     # define a haar-cascader from a pre-trained data
     facefinder = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
     # load the victim image, to which we will add a hat 
     victim_img = ''
-    victim, _ = urlretrieve(victimimg)
+    victim, _ = urlretrieve(victim_img)
     hat_img = message
     hat, _ = urlretrieve(hat_img)
     img = cv2.imread(victim)
